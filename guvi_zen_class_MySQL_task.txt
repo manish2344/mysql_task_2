@@ -1,0 +1,220 @@
+
+CREATE DATABASE guvi_zen_class;
+
+USE guvi_zen_class;
+
+CREATE TABLE mentors(
+	mentor_id INT NOT NULL, 
+    mentor_name VARCHAR(50) NOT NULL,
+    email_id VARCHAR(50) NOT NULL,
+    PRIMARY KEY (mentor_id)
+    );
+
+CREATE TABLE users(
+	user_id INT NOT NULL, 
+    user_name VARCHAR(50) NOT NULL,
+    email_id VARCHAR(50) NOT NULL,
+    batch_id INT,
+    mentor_id INT,
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (mentor_id) REFERENCES mentors(mentor_id)
+    );
+    
+CREATE TABLE codekata(
+	problem_id INT NOT NULL, 
+    catagory_name VARCHAR(50) NOT NULL,
+    problem_description VARCHAR(50) NOT NULL,
+    PRIMARY KEY (problem_id)
+    );
+    
+CREATE TABLE user_codekata_status(
+	user_id INT NOT NULL, 
+    problem_id INT NOT NULL,
+    problem_status VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (problem_id) REFERENCES codekata(problem_id)
+    );
+
+CREATE TABLE topics(
+	topic_id INT NOT NULL, 
+    topic_name VARCHAR(50) NOT NULL,
+    topic_description VARCHAR(50) NOT NULL,
+    topic_date DATE,
+    PRIMARY KEY (topic_id)
+    );
+
+CREATE TABLE attendance(
+	user_id INT NOT NULL, 
+    topic_id INT NOT NULL,
+    attendance_status VARCHAR(50),
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (topic_id) REFERENCES topics(topic_id)
+    );
+    
+CREATE TABLE tasks(
+	task_id INT NOT NULL, 
+    task_name VARCHAR(50) NOT NULL,
+    task_description VARCHAR(50) NOT NULL,
+    PRIMARY KEY (task_id)
+    );
+
+ CREATE TABLE user_submitted_task(
+	user_id INT NOT NULL, 
+    task_id INT NOT NULL,
+    task_status VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (task_id) REFERENCES tasks(task_id)
+    );   
+
+CREATE TABLE company_drives(
+	company_drive_id INT NOT NULL, 
+    company_name VARCHAR(50) NOT NULL,
+    interview_date DATE NOT NULL,
+    PRIMARY KEY (company_drive_id)
+    );
+    
+ CREATE TABLE user_attended_drives(
+	user_id INT NOT NULL, 
+    company_drive_id INT NOT NULL,
+    interview_status VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (company_drive_id) REFERENCES company_drives(company_drive_id)
+    );
+    
+CREATE TABLE courses(
+	course_id INT NOT NULL, 
+    course_name VARCHAR(50) NOT NULL,
+    course_description VARCHAR(50) NOT NULL,
+    PRIMARY KEY (course_id)
+    );
+
+ CREATE TABLE students_activated_courses(
+	user_id INT NOT NULL, 
+    course_id INT NOT NULL,
+    course_status VARCHAR(50) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+    );   
+    
+INSERT INTO mentors VALUES 
+	(1,'mentor1','mentor1@gmail.com'),
+	(2,'mentor2','mentor2@gmail.com'),
+	(3,'mentor3','mentor3@gmail.com'),
+	(4,'mentor4','mentor4@gmail.com'),
+	(5,'mentor5','mentor5@gmail.com');
+    
+INSERT INTO users VALUES 
+	(1,'user1','user1@gmail.com',24,1),
+	(2,'user2','user2@gmail.com',24,2),
+	(3,'user3','user3@gmail.com',24,3),
+	(4,'user4','user4@gmail.com',24,1),
+	(5,'user5','user5@gmail.com',24,2);
+
+INSERT INTO codekata VALUES 
+	(1,'Input/Output','Write a code to get the input in the given format and print the output in the given format.'),
+	(2,'absolute beginner','Write a code to get an integer N and print the even values from 1 till N in a separate line.'),
+	(3,'Array','A person saves his monthly saving according to given schema. He saves same amount of money which is equal to the money saved in immediate previous two months. Assume, initially he saved 1000 rupees and in first month he saved another 1000. Your task is to tell how much he had totally saved at the end of ‘n’ months'),
+	(4,'absolute beginner','Write a code get an integer number as input and print the sum of the digits.'),
+	(5,'absolute beginner','Write a code get an integer number as input and print the odd and even digits of the number separately.');
+    
+INSERT INTO user_codekata_status VALUES
+	(1,1,'completed'),
+	(1,2,'completed'),
+	(1,3,'inprogress'),
+	(2,1,'completed'),
+	(2,2,'inprogress'),
+	(3,1,'completed'),
+	(3,2,'completed'),
+	(3,3,'completed'),
+	(3,4,'completed'),
+	(4,1,'inprogress'),
+	(5,1,'completed'),
+	(5,2,'inprogress');
+
+INSERT INTO topics VALUES
+	(1,'HTML','HTML','2022-01-01'),
+	(2,'Javascript','Javascript','2022-01-01'),
+	(3,'ReactJS','ReactJS','2022-01-01'),
+	(4,'MongoDB','MongoDB','2022-01-01'),
+	(5,'NodeJS','NodeJS','2022-01-01');
+
+INSERT INTO attendance VALUES
+	(1,1,'present'),
+	(2,1,'present'),
+	(3,1,'present'),
+	(4,1,'present'),
+	(5,1,'present');
+
+INSERT INTO tasks VALUES 
+	(1,'create-react-app','create a react app'),
+	(2,'MySQL tables','create tables in MySQL'),
+	(3,'HTML forms','create a form in HTML'),
+	(4,'API','write code to fetch data from API'),
+	(5,'CSS','design a responsive page');
+
+INSERT INTO user_submitted_task VALUES 
+	(1,1,'completed'),
+	(2,1,'under review'),
+	(2,3,'submitted'),
+	(3,3,'completed'),
+	(5,3,'completed');
+
+INSERT INTO company_drives VALUES 
+	(1,'company1','2022-01-10'),
+	(2,'company2','2022-01-13'),
+	(3,'company3','2022-01-17'),
+	(4,'company4','2022-01-18'),
+	(5,'company5','2022-01-15');
+
+INSERT INTO user_attended_drives VALUES 
+	(1,2,'not attended'),
+	(1,1,'selected'),
+	(2,2,'not attended'),
+	(2,3,'attended'),
+	(3,1,'not attended'),
+	(3,3,'rejected'),
+	(3,5,'selected'),
+	(4,4,'not attended'),
+	(5,5,'selected');
+
+INSERT INTO courses VALUES 
+	(1,'course1','course1 description'),
+	(2,'course2','course2 description'),
+	(3,'course3','course3 description'),
+	(4,'course4','course4 description'),
+	(5,'course5','course5 description');
+
+INSERT INTO students_activated_courses VALUES 
+	(1,4,'completed'),
+	(1,5,'inprogress'),
+	(2,4,'completed'),
+	(3,3,'inprogress'),
+	(4,2,'completed'),
+	(5,1,'inprogress');
+
+-- get number problems solved in codekata by combining the users
+select u.user_name,count(uc.problem_id) as No_of_problems_solved
+from user_codekata_status uc
+right join users u on uc.user_id = u.user_id and uc.problem_status = 'completed'
+group by u.user_name;
+
+-- display the no of company drives attended by a user
+select u.user_name,count(ua.interview_status) as No_of_companies_attended
+from user_attended_drives ua
+right join users u on ua.user_id = u.user_id and ua.interview_status != 'not attended'
+group by u.user_name;
+    
+-- combine and display students_activated_courses and courses for a specific user groping them based on the course
+select *
+from courses c
+join students_activated_courses sac on sac.course_id = c.course_id
+where user_id = 1;
+
+-- list all the mentors
+select mentor_name from mentors;
+
+-- list the number of students that are assigned for a mentor
+select m.mentor_name,count(u.user_id)
+from mentors m
+left join users u on u.mentor_id = m.mentor_id
+group by m.mentor_name
